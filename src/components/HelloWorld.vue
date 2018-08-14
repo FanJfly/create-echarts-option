@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
     <router-link :to="{path: 'test'}">
-      <div class="hello">test</div>
+      <div class="hello">test1111</div>
     </router-link>
     <router-link :to="{path: 'charts'}">charts</router-link>
   </div>
