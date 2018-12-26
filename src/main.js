@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import { Button, Tag, Container, Aside, Main } from 'element-ui'
+import { Button, Tag, Container, Aside, Main, Select, Option, Input, ColorPicker, Form, FormItem } from 'element-ui'
 import ECharts from 'vue-echarts/components/ECharts.vue'
 
 // 手动引入 ECharts 各模块来减小打包体积
@@ -19,6 +19,12 @@ Vue.use(Tag)
 Vue.use(Container)
 Vue.use(Aside)
 Vue.use(Main)
+Vue.use(Select)
+Vue.use(Input)
+Vue.use(Option)
+Vue.use(ColorPicker)
+Vue.use(Form)
+Vue.use(FormItem)
 
 /* eslint-disable no-new */
 new Vue({
