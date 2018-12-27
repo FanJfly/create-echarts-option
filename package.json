@@ -15,10 +15,10 @@
   },
   "dependencies": {
     "element-ui": "^2.4.5",
-    "qs": "^6.5.2",
     "vue": "^2.5.2",
     "vue-codemirror": "^4.0.5",
     "vue-echarts": "^3.0.9",
+    "vue-json-viewer": "^2.0.6",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
