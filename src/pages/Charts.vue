@@ -18,7 +18,13 @@
         </el-form-item>
 
         <el-form-item label="x轴数据">
-          <el-input label="xAxis" placeholder="x轴数据" v-model="xData"></el-input>
+          <el-input 
+            label="xAxis" 
+            placeholder="x轴数据,必须为数组" 
+            v-model="xData" 
+            @change="setXAxisData"
+            >
+          </el-input>
         </el-form-item>
 
         <el-form-item label="是否显示x轴刻度 ">
@@ -37,8 +43,17 @@
         </el-form-item>
 
         <el-form-item label="y轴数据">
-          <el-input label="yAxis" placeholder="y轴数据" v-model="yData"></el-input>
+          <el-input label="yAxis" placeholder="y轴数据" v-model="yData" @change="setYAxisData"></el-input>
         </el-form-item>
+
+         <el-button class="button-new-tag" size="small"  @click="() => addNew('line')"> + 折线图</el-button>
+         <el-form-item label="新增y轴数据" v-if='inputlineVisiable'>
+          <el-input label="yAxis" placeholder="y轴数据" @change="(value) => addYAxisData(value, 'line')"></el-input>
+         </el-form-item>
+         <el-button class="button-new-tag" size="small"  @click="() => addNew('bar')">+ 柱状图</el-button>
+         <el-form-item label="新增y轴数据" v-if='inputbarVisiable'>
+          <el-input label="yAxis" placeholder="y轴数据" @change="(value) => addYAxisData(value, 'bar')"></el-input>
+         </el-form-item>
 
         <el-form-item label="是否显示y轴刻度 ">
           <el-select v-model="hasYSplit" @change="(value) => setAxisConfig(value, 'y', 'tick')">   
@@ -75,7 +90,7 @@
         </el-form-item>
 
         <el-form-item label="是否显示为面积图">
-          <el-select v-model="isArea" @change="() => setSeriesConfig('toArea', value)">
+          <el-select v-model="isArea" @change="(value) => setSeriesConfig('toArea', value)">
             <el-option value="是">是</el-option>
             <el-option value="否">否</el-option>
           </el-select>
@@ -95,7 +110,7 @@
       <codemirror :value="option" :options="cmOptions" @change="change"></codemirror>
     </el-aside> -->
     <el-main>
-      <ECharts :options="option"></ECharts>
+      <vue-echart :options="option"></vue-echart>
       <json-viewer
         :value="option"
         :expand-depth=5
@@ -110,7 +125,7 @@
 import "echarts/lib/chart/bar";
 // built-in theme
 import "echarts/theme/dark";
-import ECharts from "../components/ECharts";
+import VueEchart from "../components/ECharts";
 import echarts from "echarts";
 import JsonViewer from "vue-json-viewer";
 
@@ -125,7 +140,6 @@ export default {
       data.push([r, i]);
     }
     return {
-      msg: "Welcome to Your Vue.js App",
       form: {},
       formatOption: "",
       cmOptions: {
@@ -142,10 +156,12 @@ export default {
         title: {
           text: ""
         },
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        },
+        xAxis: [
+          {
+            type: "category",
+            data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+          }
+        ],
         yAxis: {
           type: "value"
         },
@@ -185,7 +201,9 @@ export default {
           label: "饼图"
         }
       ],
-      value: ""
+      inputlineVisiable: false,
+      inputbarVisiable: false,
+      addNewType: 'line'
     };
   },
   methods: {
@@ -236,7 +254,7 @@ export default {
             ? (setting = {
                 areaStyle: {}
               })
-            : {};
+            : "";
           return setting;
           break;
         //设置线条渐变
@@ -288,9 +306,30 @@ export default {
         ...setting
       };
     },
+    setXAxisData(value) {
+      let data = JSON.parse(value);
+      this.option["xAxis"][0].data = data;
+    },
+    setYAxisData(value) {
+      let data = JSON.parse(value);
+      this.option["series"][0].data = data;
+    },
+    addNew(type) {
+      this[`input${type}Visiable`] = true;
+      this.addNewType = type
+    },
+    addYAxisData(value,type) {
+      let ydata = {
+        data: JSON.parse(value),
+        type: type
+      };
+      this.option['series'].push(ydata)
+      this[`input${type}Visiable`] = false;
+    },
 
     setSeriesConfig(attr, value) {
       let setting = this.getConfig(attr, value);
+      console.log(value);
       this.option["series"] = this.option["series"].map(item => {
         item = {
           ...item,
@@ -298,7 +337,7 @@ export default {
         };
         return item;
       });
-    },
+    }
   },
   watch: {
     option: {
@@ -310,7 +349,7 @@ export default {
     }
   },
   components: {
-    ECharts,
+    VueEchart,
     JsonViewer
   }
 };
