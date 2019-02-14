@@ -4,14 +4,14 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import { Button, Tag, Container, Aside, Main, Select, Option, Input, ColorPicker, Form, FormItem } from 'element-ui'
-import ECharts from 'vue-echarts/components/ECharts.vue'
-
+//import * as Sentry from '@sentry/node';
 // 手动引入 ECharts 各模块来减小打包体积
-import 'echarts/lib/chart/bar'
-import 'echarts/lib/component/tooltip'
+//import 'echarts/lib/chart/bar'
+//import 'echarts/lib/component/tooltip'
 
-// 注册组件后即可使用
-Vue.component('chart', ECharts)
+// 注册组件后即可使
+//Vue.component('chart', ECharts)
+
 
 Vue.config.productionTip = false
 Vue.use(Button)
@@ -25,6 +25,11 @@ Vue.use(Option)
 Vue.use(ColorPicker)
 Vue.use(Form)
 Vue.use(FormItem)
+//Sentry.init({ dsn: 'http://c9052b338d164f7d8b7ab7ca88efd4d5@localhost:10010' });
+//Sentry.captureMessage('Hello, world!');
+
+
+
 
 /* eslint-disable no-new */
 new Vue({
